@@ -15,19 +15,21 @@ def get_filepath():
         help="The path of the file to be parsed (necessary)"
     )
 
-    # returns the file path given 
-    return parser.parse_args().net_file
-
+    # returns the path given
+    net_file = parser.parse_args().net_file
+    if not net_file:
+        parser.print_help()
+        quit()
+    return net_file
 
 def main():
     # opens the file that will store the connections
-    with open('networkconnections.txt', 'w') as w_file:
+    with open('networkConnections.txt', 'w') as w_file:
 
-        # gets the path given to the program
+        # gets the path 
         net_path = get_filepath()
 
-        assert net_path != -1, "Error in the file path"
-
+        # reads the network
         network = sumolib.net.readNet(net_path)
 
         # for every edge in the network
@@ -43,4 +45,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
