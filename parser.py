@@ -1,5 +1,6 @@
 import sumolib
 import argparse
+import re
 
 def get_filepath():
     # parses the input
@@ -12,7 +13,7 @@ def get_filepath():
         required=True, 
         action="store", 
         dest="net_file",
-        help="The path of the file to be parsed (necessary)"
+        help="The path to the file to be parsed (necessary)"
     )
 
     # returns the path given
@@ -22,12 +23,23 @@ def get_filepath():
         quit()
     return net_file
 
-def main():
-    # opens the file that will store the connections
-    with open('networkConnections.txt', 'w') as w_file:
+def get_filename(path):
+    regex_parser = re.compile(r'''
+        ([0-9a-zA-Z]*)              #gets the word, not including the '/' of the path if it cointains
+        [.]net[.]xml          #the string must end in '.net.xml', but not include it
+        $                           #indicates the end of the string
+    ''', re.VERBOSE)
+    return regex_parser.findall(path)[0]
 
-        # gets the path 
-        net_path = get_filepath()
+
+def main():
+    # gets the path 
+    net_path = get_filepath()
+
+    fileName = get_filename(net_path) + '.txt'
+
+    # opens the file that will store the connections
+    with open(fileName, 'w') as w_file:
 
         # reads the network
         network = sumolib.net.readNet(net_path)
