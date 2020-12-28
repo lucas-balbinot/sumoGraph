@@ -18,4 +18,3 @@ Dessa forma, irá cobrir todos os caminhos possíveis que ligam um nodo a outro.
  ```
  python3 parser.py -p <path_to_the_file>
  ```
-
