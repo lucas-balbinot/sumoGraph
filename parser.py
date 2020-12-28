@@ -1,6 +1,5 @@
 import sumolib
 import argparse
-import re
 
 def get_filepath():
     # parses the input
@@ -24,12 +23,12 @@ def get_filepath():
     return net_file
 
 def get_filename(path):
-    regex_parser = re.compile(r'''
-        ([0-9a-zA-Z]*)              #gets the word, not including the '/' of the path if it cointains
-        [.]net[.]xml          #the string must end in '.net.xml', but not include it
-        $                           #indicates the end of the string
-    ''', re.VERBOSE)
-    return regex_parser.findall(path)[0]
+    splitted = path.split(r'/')
+
+    if '.net.xml' in splitted[-1]:
+        return splitted[-1][:-8]
+        
+    raise Exception('FileNotSupported')
 
 
 def main():

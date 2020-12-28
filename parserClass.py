@@ -1,6 +1,5 @@
 import sumolib
 import argparse
-import re
 
 class NetParser:
     def __init__(self):
@@ -29,13 +28,12 @@ class NetParser:
         return net_file
     
     def get_filename(self):
-        regex_parser = re.compile(r'''
-            ([0-9a-zA-Z]*)              #gets the word, not including the '/' of the path if it cointains
-            [.]net[.]xml          #the string must end in '.net.xml', but not include it
-            $                           #indicates the end of the string
-        ''', re.VERBOSE)
+        splitted = self.path.split(r'/')
 
-        return regex_parser.findall(self.path)[0]
+        if '.net.xml' in splitted[-1]:
+            return splitted[-1][:-8]
+        
+        raise Exception('FileNotSupported')
 
     def main(self):
         # opens the file that will store the connections
